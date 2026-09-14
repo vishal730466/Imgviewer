@@ -1,179 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Viewer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            background-color: #2a2a2a;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
-            width: 100%;
-        }
-        
-        h1 {
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .image-display {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        input[type="file"] {
-            padding: 10px;
-            background-color: #3a3a3a;
-            color: #ffffff;
-            border: 1px solid #555;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3x3 Image Grid</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    /* 3 x 3 grid */
+    .grid {
+      width: 90vw;
+      max-width: 500px;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 0;              /* No spacing */
+      background: none;    /* Prevent faint lines */
+    }
+
+    /* Individual box */
+    .box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: transparent; /* No background */
+      border: none;
+      outline: none;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Plus symbol */
+    .box span {
+      font-size: 45px;
+      color: #aaa;
+      pointer-events: none;
+    }
+
+    /* Uploaded image */
+    .box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* Hide file input */
+    .box input {
+      display: none;
+    }
+
+    /* Optional hover effect */
+    .box:hover {
+      background: #eeeeee;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Image Viewer</h1>
-        
-        <div class="image-display">
-            <img id="imageDisplay" src="" alt="No image selected" style="display: none;">
-        </div>
-        
-        <div class="controls">
-            <input type="file" id="imageInput" accept="image/*">
-            <button onclick="loadImage()">Load Image</button>
-            <button onclick="clearImage()">Clear</button>
-        </div>
+  <div class="grid">
+    <!-- BOXES -->
+    <div class="box" onclick="openFile(0)">
+      <span>+</span>
+      <img id="image-0">
+      <input type="file" id="file-0" accept="image/*" onchange="showImage(event, 0)">
     </div>
-    
-    <script>
-        const imageInput = document.getElementById('imageInput');
-        const imageDisplay = document.getElementById('imageDisplay');
-        
-        function loadImage() {
-            const file = imageInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imageDisplay.src = e.target.result;
-                    imageDisplay.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert('Please select an image file');
-            }
-        }
-        
-        function clearImage() {
-            imageDisplay.src = '';
-            imageDisplay.style.display = 'none';
-            imageInput.value = '';
-        }
-        
-        // Allow loading on Enter key press
-        imageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loadImage();
-            }
-        });
-    </script>
+    <div class="box" onclick="openFile(1)">
+      <span>+</span>
+      <img id="image-1">
+      <input type="file" id="file-1" accept="image/*" onchange="showImage(event, 1)">
+    </div>
+    <div class="box" onclick="openFile(2)">
+      <span>+</span>
+      <img id="image-2">
+      <input type="file" id="file-2" accept="image/*" onchange="showImage(event, 2)">
+    </div>
+    <div class="box" onclick="openFile(3)">
+      <span>+</span>
+      <img id="image-3">
+      <input type="file" id="file-3" accept="image/*" onchange="showImage(event, 3)">
+    </div>
+    <div class="box" onclick="openFile(4)">
+      <span>+</span>
+      <img id="image-4">
+      <input type="file" id="file-4" accept="image/*" onchange="showImage(event, 4)">
+    </div>
+    <div class="box" onclick="openFile(5)">
+      <span>+</span>
+      <img id="image-5">
+      <input type="file" id="file-5" accept="image/*" onchange="showImage(event, 5)">
+    </div>
+    <div class="box" onclick="openFile(6)">
+      <span>+</span>
+      <img id="image-6">
+      <input type="file" id="file-6" accept="image/*" onchange="showImage(event, 6)">
+    </div>
+    <div class="box" onclick="openFile(7)">
+      <span>+</span>
+      <img id="image-7">
+      <input type="file" id="file-7" accept="image/*" onchange="showImage(event, 7)">
+    </div>
+    <div class="box" onclick="openFile(8)">
+      <span>+</span>
+      <img id="image-8">
+      <input type="file" id="file-8" accept="image/*" onchange="showImage(event, 8)">
+    </div>
+  </div>
+
+  <script>
+    // Open file picker
+    function openFile(index) {
+      const fileInput = document.getElementById("file-" + index);
+      fileInput.click();
+    }
+
+    // Display selected image
+    function showImage(event, index) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const image = document.getElementById("image-" + index);
+      const plus = image.previousElementSibling;
+
+      image.src = URL.createObjectURL(file);
+      image.style.display = "block";
+      plus.style.display = "none";
+    }
+  </script>
 </body>
-</html>        }
-        
-        .image-display {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        input[type="file"] {
-            padding: 10px;
-            background-color: #3a3a3a;
+</html>            background-color: #3a3a3a;
             color: #ffffff;
             border: 1px solid #555;
             border-radius: 4px;
